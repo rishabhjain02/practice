@@ -1,5 +1,13 @@
 package main
 
+import (
+	"github.com/rishabh/practice/http"
+
+	"github.com/gin-gonic/gin"
+	"github.com/rishabh/practice/repository"
+	"github.com/rishabh/practice/usecase"
+)
+
 // We would like you to create a crypto notification app. The features it should include:
 
 // Create a server which will be able to take in the following rest APIs
@@ -10,5 +18,10 @@ package main
 // Delete a notification
 
 func main() {
-	// notificationRepo := repository.New
+	notificationRepo := repository.NewNotificationRepo("db")
+	notificationUsecase := usecase.NewNotificationUsecase(notificationRepo)
+	router := gin.Default()
+	http.NewNotificationHandler(router, *notificationUsecase)
+
+	router.Run(":8080")
 }
